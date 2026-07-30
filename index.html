@@ -1,5 +1,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0B1B2B">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Lane 8">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <title>Lane Eight — Training & Fuel</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
@@ -139,7 +144,10 @@ nav button{position:relative}
     <span class="mark">LANE<b>8</b></span>
     <span class="sub">Train · Fuel · Track</span>
   </div>
-  <button class="iconbtn" data-action="open-settings" aria-label="Settings">⚙</button>
+  <div class="row" style="gap:8px">
+    <button class="iconbtn" data-action="account" aria-label="Cloud sync">☁</button>
+    <button class="iconbtn" data-action="open-settings" aria-label="Settings">⚙</button>
+  </div>
 </header>
 
 <main id="app"><div class="screen"><p class="muted" style="text-align:center;padding:40px 0">Loading your data…</p></div></main>
@@ -200,8 +208,14 @@ const EX = {
   hillsprint:{n:"Hill sprints",m:"Power / conditioning",cue:"Drive the arms, powerful strides uphill, walk down to recover.",mis:"Too many too fast. Quality reps beat junk volume.",alt:["Flat sprints","Stair sprints","Bike sprints"]},
   latbound:{n:"Lateral bound / skater hop",m:"Lateral power",cue:"Land on the opposite leg and freeze before bounding back.",mis:"Rushing side to side without controlling the landing.",alt:["Skater squat","Side-to-side hops","Lateral band walk"]},
   shuttle:{n:"Shuttle run (5-10-5)",m:"Change of direction",cue:"Sink your hips low and plant hard to change direction.",mis:"Staying tall and rounding the turns.",alt:["Cone drills","Defensive slides","Agility ladder","T-drill"]},
-  intervals:{n:"Bike / rower intervals",m:"Conditioning",cue:"The hard intervals should be genuinely hard (8–9/10).",mis:"Going 'medium' the whole time. Hard/easy, not steady.",alt:["Assault bike","Rower","Run intervals","Jump rope intervals"]},
+  intervals:{n:"Bike / rower intervals",m:"Conditioning",cue:"The hard intervals should be genuinely hard (8–9/10).",mis:"Going 'medium' the whole time. Hard/easy, not steady.",alt:["Assault bike","Rower","Jump rope intervals","Burpee intervals"]},
   zone2:{n:"Zone 2 / swim",m:"Recovery engine",cue:"Easy, conversational pace. Uses your base and speeds recovery.",mis:"Turning it into a hard session.",alt:["Easy swim","Zone 2 walk/jog","Easy bike","Long walk"]},
+  kbswing:{n:"Kettlebell / DB swing",m:"Hip power + conditioning",cue:"Snap the hips through hard — it's a hinge, not a squat. Arms just float.",mis:"Squatting it or lifting with the arms/shoulders.",alt:["DB swing","Explosive hip thrust","Cable pull-through","Broad jump"]},
+  tuckjump:{n:"Tuck / squat jump",m:"Reactive power (in place)",cue:"Explode up, land soft and quiet, fully reset before the next rep.",mis:"Loud landings and rushing. Quality over speed.",alt:["Vertical jump","Pogo hops","Box jump"]},
+  cossack:{n:"Cossack squat",m:"Lateral strength (in place)",cue:"Sit into one hip, that heel stays down, other leg straight with toes up.",mis:"Heel lifting or rushing the shift side to side.",alt:["Lateral lunge","Skater squat","Adductor machine"]},
+  latbandwalk:{n:"Lateral band walk",m:"Glute med / lateral",cue:"Band above the knees, stay low in a half-squat, small controlled steps.",mis:"Standing tall or letting the knees cave in.",alt:["Monster walk","Cossack squat","Clamshell"]},
+  jumprope:{n:"Jump rope",m:"Conditioning / feet",cue:"Small quick bounces on the balls of the feet, wrists do the turning.",mis:"Big tiring jumps. Stay light and springy.",alt:["Pogo hops","Line hops","Fast step-ups"]},
+  burpee:{n:"Burpee",m:"Conditioning (no space)",cue:"Smooth chest to floor, pop up, small jump. Pace it — steady beats sloppy.",mis:"Hips sagging on the way down. Hold a plank line.",alt:["Squat thrust (no jump)","KB swing intervals","Mountain climbers"]},
 };
 
 const PROGRAM = {
@@ -209,7 +223,7 @@ const PROGRAM = {
     sessions:[
       {id:"p1d1",name:"Lower — Power",items:[["broadjump","4×3 · prime"],["legpress","4×8"],["hipthrust","4×8–10"],["bulgarian","3×8/leg"],["rdl","3×10"],["calf","3×12"],["tibialis","3×12"],["pallof","3×12/side"]]},
       {id:"p1d2",name:"Upper — Strength",items:[["inclinedb","4×8 @17.5kg"],["flatdb","3×10"],["pullup","4×6–8"],["ohp","3×8"],["row","3×10"],["facepull","3×15"],["carry","3×30m"],["dbcurl","opt 3×12"],["triext","opt 3×12"]]},
-      {id:"p1d3",name:"Athletic + Conditioning",items:[["sprints","8×20–30m"],["latbound","4×6/side"],["shuttle","6 rounds"],["intervals","8×30s/90s"],["deadbug","3×10"]]},
+      {id:"p1d3",name:"Athletic + Conditioning",items:[["tuckjump","4×5 · prime"],["kbswing","6×12"],["cossack","3×8/side"],["latbandwalk","3×15/side"],["intervals","8×30s/90s"],["deadbug","3×10"]]},
       {id:"p1d4",name:"Lower — Hypertrophy",items:[["goblet","4×10–12"],["latlunge","3×10/side"],["hipthrust","4×10"],["hamcurl","3×12"],["adductor","3×15"],["hanglegraise","3×12"]]},
       {id:"p1d5",name:"Upper — Shoulders & Arms",items:[["flatdb","4×10"],["row","4×12"],["ohp","3×10"],["lateralraise","4×15"],["reardelt","3×15"],["facepull","3×15"],["hammercurl","3×12"],["pushdown","3×15"],["inclinecurl","3×12"],["triext","3×12"]]},
       {id:"p1d6",name:"Recovery / Engine",items:[["zone2","30–40 min"]]},
@@ -247,24 +261,100 @@ const DEFAULTS = ()=>({
 });
 let state = DEFAULTS();
 let saveTimer=null;
-const mem = {}; // fallback if storage missing
+const mem = {}; // last-resort fallback
+
+/* storage priority: Claude window.storage → IndexedDB (reliable on iOS) → localStorage → memory */
+let idbP=null;
+function idbOpen(){
+  if(idbP)return idbP;
+  idbP=new Promise((res,rej)=>{
+    let r; try{ r=indexedDB.open("lane8db",1); }catch(e){ return rej(e); }
+    r.onupgradeneeded=()=>{ try{ r.result.createObjectStore("kv"); }catch(e){} };
+    r.onsuccess=()=>res(r.result); r.onerror=()=>rej(r.error);
+  });
+  return idbP;
+}
+function idbGet(k){ return idbOpen().then(db=>new Promise((res,rej)=>{
+  const t=db.transaction("kv","readonly").objectStore("kv").get(k);
+  t.onsuccess=()=>res(t.result==null?null:t.result); t.onerror=()=>rej(t.error);
+})); }
+function idbSet(k,v){ return idbOpen().then(db=>new Promise((res,rej)=>{
+  const tx=db.transaction("kv","readwrite"); tx.objectStore("kv").put(v,k);
+  tx.oncomplete=()=>res(true); tx.onerror=()=>rej(tx.error);
+})); }
 
 async function rawGet(k){
-  if(window.storage){ try{ const r=await window.storage.get(k); return r?r.value:null; }catch(e){ return null; } }
+  if(window.storage){ try{ const r=await window.storage.get(k); if(r)return r.value; }catch(e){} }
+  try{ const v=await idbGet(k); if(v!=null)return v; }catch(e){}
+  try{ const v=localStorage.getItem(k); if(v!=null)return v; }catch(e){}
   return mem[k]??null;
 }
 async function rawSet(k,v){
-  if(window.storage){ try{ await window.storage.set(k,v); return true; }catch(e){ console.error(e); return false; } }
-  mem[k]=v; return true;
+  let ok=false;
+  if(window.storage){ try{ await window.storage.set(k,v); ok=true; }catch(e){} }
+  try{ await idbSet(k,v); ok=true; }catch(e){}
+  try{ localStorage.setItem(k,v); }catch(e){}
+  mem[k]=v; return ok;
 }
 async function loadState(){
   const v = await rawGet("fitdata");
   if(v){ try{ const p=JSON.parse(v); state=Object.assign(DEFAULTS(),p); state.settings=Object.assign(DEFAULTS().settings,p.settings||{}); }catch(e){} }
 }
 function save(){ clearTimeout(saveTimer); saveTimer=setTimeout(async()=>{
-  const ok=await rawSet("fitdata",JSON.stringify(state));
-  if(!ok) toast("Saved locally only");
+  const payload=JSON.stringify(state);
+  await rawSet("fitdata",payload);
+  if(cloud&&cloud.push) cloud.push(payload);
 },350); }
+
+/* ---------------- cloud sync (Firebase) ---------------- */
+/* ▼▼▼ PASTE YOUR FIREBASE KEYS HERE (see setup guide). Until you do, the app runs local-only. ▼▼▼ */
+const FIREBASE_CONFIG = {
+  apiKey:"AIzaSyCJjpmLxxpiPDLqLq7JpPl-t-Zx8DyJM7I",
+  authDomain:"lane8-88e7e.firebaseapp.com",
+  projectId:"lane8-88e7e",
+  appId:"1:683710011379:web:d65e10d1feda1db7bba486"
+};
+/* ▲▲▲ nothing else below needs editing ▲▲▲ */
+let fbReady=false, fbErr="", authApi=null, dbApi=null, cloud=null, lastSent=null, authMode="login";
+function cloudConfigured(){ return FIREBASE_CONFIG.apiKey && FIREBASE_CONFIG.apiKey.indexOf("PASTE")!==0; }
+async function initFirebase(){
+  if(!cloudConfigured())return;
+  try{
+    const appMod=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js");
+    const auth=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js");
+    const fs=await import("https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js");
+    const appF=appMod.initializeApp(FIREBASE_CONFIG);
+    authApi=Object.assign({inst:auth.getAuth(appF)},auth);
+    dbApi=Object.assign({db:fs.getFirestore(appF)},fs);
+    fbReady=true;
+    auth.onAuthStateChanged(authApi.inst,onAuth);
+  }catch(e){ fbErr=String((e&&e.message)||e); }
+}
+async function onAuth(u){
+  if(!u){ cloud=null; render(); return; }
+  const ref=dbApi.doc(dbApi.db,"users",u.uid);
+  cloud={uid:u.uid,email:u.email,ref,push:async(p)=>{ lastSent=p; try{ await dbApi.setDoc(ref,{data:p,updatedAt:Date.now()},{merge:true}); }catch(e){} }};
+  try{
+    const snap=await dbApi.getDoc(ref);
+    if(snap.exists()&&snap.data().data){ applyRemote(snap.data().data); }
+    else { await cloud.push(JSON.stringify(state)); } // new account: seed with current data
+  }catch(e){}
+  try{ dbApi.onSnapshot(ref,snap=>{ const d=snap.data(); if(d&&d.data&&d.data!==lastSent) applyRemote(d.data); }); }catch(e){}
+  render();
+}
+function applyRemote(json){
+  const ae=document.activeElement;
+  if(ae&&/INPUT|SELECT|TEXTAREA/.test(ae.tagName))return; // don't overwrite while typing
+  try{ const p=JSON.parse(json); state=Object.assign(DEFAULTS(),p); state.settings=Object.assign(DEFAULTS().settings,p.settings||{}); render(); }catch(e){}
+}
+async function doAuth(email,pw,create){
+  if(!fbReady)return "cloud not ready";
+  try{
+    if(create) await authApi.createUserWithEmailAndPassword(authApi.inst,email,pw);
+    else await authApi.signInWithEmailAndPassword(authApi.inst,email,pw);
+    return "";
+  }catch(e){ return ((e.code||"").replace("auth/","").replace(/-/g," "))||"failed"; }
+}
 
 /* ---------------- helpers ---------------- */
 const $=s=>document.querySelector(s);
@@ -313,6 +403,7 @@ function render(){
   else if(tab==="diet")renderDiet();
   else if(tab==="progress")renderProgress();
   document.querySelectorAll("#nav button").forEach(b=>b.classList.toggle("on",b.dataset.tab===tab));
+  const ab=document.querySelector('[data-action="account"]'); if(ab)ab.style.color=cloud?"var(--aqua)":"";
 }
 
 function renderToday(){
@@ -517,6 +608,27 @@ function settingsSheet(){
     <button class="btn" data-action="save-settings" style="margin-top:8px">Save</button>
     <button class="btn ghost" data-action="close" style="margin-top:10px">Cancel</button>`);
 }
+function accountSheet(){
+  if(!cloudConfigured()){
+    openSheet(`<h2>Cloud sync</h2><p class="muted" style="font-size:14px;line-height:1.6">Not set up yet. Open <b>lane-eight.html</b>, paste your Firebase keys into the <b>FIREBASE_CONFIG</b> block near the top of the script, save, and reload. The setup guide walks you through it — about 5 minutes.</p><button class="btn ghost" data-action="close" style="margin-top:8px">Close</button>`);
+    return;
+  }
+  if(!fbReady){
+    openSheet(`<h2>Cloud sync</h2><p class="muted" style="font-size:14px">Connecting…${fbErr?`<br><br>Error: ${fbErr}`:""}</p><button class="btn ghost" data-action="close" style="margin-top:8px">Close</button>`);
+    return;
+  }
+  if(cloud){
+    openSheet(`<h2>Cloud sync</h2><p style="font-size:15px;line-height:1.6">Signed in as <b style="color:var(--aqua)">${cloud.email}</b>.<br>Your training, fuel, and weight sync to every device where you sign in with this account.</p><button class="btn" data-action="signout">Sign out</button><button class="btn ghost" data-action="close" style="margin-top:10px">Close</button>`);
+    return;
+  }
+  openSheet(`<h2>${authMode==="create"?"Create account":"Sign in"}</h2>
+    <p class="muted" style="font-size:13px;margin:4px 0 8px">Use the same email + password on your phone and laptop — that's what links them.</p>
+    <div class="field"><label>Email</label><input id="aEmail" type="email" inputmode="email" autocomplete="email"></div>
+    <div class="field"><label>Password (6+ characters)</label><input id="aPw" type="password"></div>
+    <div id="authErr" style="color:var(--danger);font-size:13px;min-height:16px;text-transform:capitalize"></div>
+    <button class="btn" data-action="auth-submit">${authMode==="create"?"Create account":"Sign in"}</button>
+    <button class="btn ghost" data-action="auth-toggle" style="margin-top:10px">${authMode==="create"?"I already have an account":"Create a new account"}</button>`);
+}
 function customFoodSheet(){
   openSheet(`<h2>Custom food</h2>
     <div class="field"><label>Name</label><input id="cN" placeholder="e.g. Tagine bowl"></div>
@@ -545,6 +657,10 @@ document.addEventListener("click",e=>{
   switch(a){
     case "pick-session": break;
     case "open-settings": settingsSheet(); break;
+    case "account": accountSheet(); break;
+    case "auth-toggle": authMode=(authMode==="create"?"login":"create"); accountSheet(); break;
+    case "auth-submit":{ const emEl=$("#aEmail"),pwEl=$("#aPw"); const em=emEl?emEl.value.trim():"",pw=pwEl?pwEl.value:""; const er=$("#authErr"); if(!em||!pw){ if(er)er.textContent="Enter email and password"; break; } if(er)er.textContent="Working…"; doAuth(em,pw,authMode==="create").then(err=>{ const e2=$("#authErr"); if(err){ if(e2)e2.textContent=err; } else { closeSheet(); toast("Synced ☁"); } }); break; }
+    case "signout": if(authApi)authApi.signOut(authApi.inst).then(()=>{ closeSheet(); toast("Signed out"); }); break;
     case "close": closeSheet(); break;
     case "info": infoSheet(el.dataset.ex); break;
     case "swap": swapSheet(+el.dataset.ei, el.dataset.ex); break;
@@ -611,4 +727,5 @@ render(); // draw immediately so the UI is interactive even before storage respo
   try{ await Promise.race([loadState(), new Promise(r=>setTimeout(r,2500))]); }catch(e){}
   render();
 })();
+initFirebase();
 </script>
