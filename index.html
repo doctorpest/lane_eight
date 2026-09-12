@@ -209,6 +209,18 @@ const EX = {
   latbound:{n:"Lateral bound / skater hop",m:"Lateral power",cue:"Land on the opposite leg and freeze before bounding back.",mis:"Rushing side to side without controlling the landing.",alt:["Skater squat","Side-to-side hops","Lateral band walk"]},
   shuttle:{n:"Shuttle run (5-10-5)",m:"Change of direction",cue:"Sink your hips low and plant hard to change direction.",mis:"Staying tall and rounding the turns.",alt:["Cone drills","Defensive slides","Agility ladder","T-drill"]},
   intervals:{n:"Bike / rower intervals",m:"Conditioning",cue:"The hard intervals should be genuinely hard (8–9/10).",mis:"Going 'medium' the whole time. Hard/easy, not steady.",alt:["Assault bike","Rower","Jump rope intervals","Burpee intervals"]},
+  sled:{n:"Sled push / pull",m:"Conditioning + power",cue:"Low body angle, drive through the legs, short powerful steps.",mis:"Standing too upright. Get behind it and push.",alt:["Treadmill incline sprints","Rower intervals","Farmer carry","Bike sprints"]},
+  treadsprint:{n:"Treadmill intervals",m:"Conditioning",cue:"Set speed first, step on/off the side rails between reps. Clip the safety key.",mis:"Jumping onto a fast belt. Never do that — use the rails.",alt:["Incline sprints","Rower 500m","Bike sprints","Sled push"]},
+  rower500:{n:"Rower 500m repeats",m:"Conditioning",cue:"Legs-hips-arms on the drive, reverse on the return. Hard efforts.",mis:"Pulling with arms first. Legs drive the boat.",alt:["Treadmill intervals","Bike sprints","Ski erg","Sled push"]},
+  farmer:{n:"Farmer carry",m:"Core + grip + conditioning",cue:"Stand tall, shoulders back, brace the core, walk with purpose.",mis:"Shrugging or leaning. Tall posture the whole way.",alt:["Suitcase carry","Trap-bar hold","Heavy DB hold"]},
+  backsquat:{n:"Barbell back squat",m:"Legs (main lift)",cue:"Brace hard, sit between the hips, knees out, drive through mid-foot.",mis:"Going heavy too soon after a layoff. Build from 65-70%.",alt:["Trap-bar deadlift","Front squat","Leg press","Goblet squat"]},
+  walkinglunge:{n:"Walking lunge",m:"Legs (unilateral)",cue:"Long step, torso tall, drive through the front heel.",mis:"Short steps that hammer the knee. Step long.",alt:["Reverse lunge","Bulgarian split squat","Step-up"]},
+  cablefly:{n:"Cable chest fly",m:"Chest",cue:"Slight bend in the elbows, squeeze across the chest, control back.",mis:"Turning it into a press. Keep the arc.",alt:["Pec deck","DB fly","Push-up"]},
+  cablecrunch:{n:"Cable crunch",m:"Core",cue:"Curl the ribs toward the hips — spine flexes, hips stay put.",mis:"Hinging at the hips instead of crunching the abs.",alt:["Hanging leg raise","Ab wheel","Weighted crunch"]},
+  kickback:{n:"Cable kickback / back extension",m:"Glutes",cue:"Squeeze the glute at the end, don't arch the lower back.",mis:"Using the lower back to swing the leg.",alt:["45 back extension","Glute bridge","Hip thrust"]},
+  cablerow1:{n:"Single-arm cable row",m:"Back",cue:"Drive the elbow back, let the shoulder blade travel, squeeze.",mis:"Twisting the torso to yank it.",alt:["1-arm DB row","Chest-supported row","Seated row"]},
+  cablepress:{n:"Cable chest press",m:"Chest",cue:"Press and squeeze, control the return, keep ribs down.",mis:"Letting the shoulders roll forward.",alt:["Machine chest press","DB press","Push-up"]},
+  mobility:{n:"Mobility work",m:"Recovery",cue:"Hips, ankles, thoracic spine. 10 min. Counteracts the desk day.",mis:"Skipping it during a desk-heavy internship.",alt:["Yoga flow","Foam roll + stretch","Easy swim"]},
   zone2:{n:"Zone 2 / swim",m:"Recovery engine",cue:"Easy, conversational pace. Uses your base and speeds recovery.",mis:"Turning it into a hard session.",alt:["Easy swim","Zone 2 walk/jog","Easy bike","Long walk"]},
   kbswing:{n:"Kettlebell / DB swing",m:"Hip power + conditioning",cue:"Snap the hips through hard — it's a hinge, not a squat. Arms just float.",mis:"Squatting it or lifting with the arms/shoulders.",alt:["DB swing","Explosive hip thrust","Cable pull-through","Broad jump"]},
   tuckjump:{n:"Tuck / squat jump",m:"Reactive power (in place)",cue:"Explode up, land soft and quiet, fully reset before the next rep.",mis:"Loud landings and rushing. Quality over speed.",alt:["Vertical jump","Pogo hops","Box jump"]},
@@ -219,44 +231,48 @@ const EX = {
 };
 
 const PROGRAM = {
-  p1:{name:"Phase 1 — Load",tag:"Gym now → Aug 10",note:"Build & bank muscle while you have the gym. Start fat loss.",
+  p1:{name:"Block 1 — Re-Entry",tag:"Weeks 1-2 · back from layoff",note:"Deliberately submaximal. Every set stops 3-4 reps short of failure. 4 sessions/week. Tendons detrain faster than muscle — this ramp prevents injury.",
     sessions:[
-      {id:"p1d1",name:"Lower — Power",items:[["broadjump","4×3 · prime"],["legpress","4×8"],["hipthrust","4×8–10"],["bulgarian","3×8/leg"],["rdl","3×10"],["calf","3×12"],["tibialis","3×12"],["pallof","3×12/side"]]},
-      {id:"p1d2",name:"Upper — Strength",items:[["inclinedb","4×8 @17.5kg"],["flatdb","3×10"],["pullup","4×6–8"],["ohp","3×8"],["row","3×10"],["facepull","3×15"],["carry","3×30m"],["dbcurl","opt 3×12"],["triext","opt 3×12"]]},
-      {id:"p1d3",name:"Athletic + Conditioning",items:[["tuckjump","4×5 · prime"],["kbswing","6×12"],["cossack","3×8/side"],["latbandwalk","3×15/side"],["intervals","8×30s/90s"],["deadbug","3×10"]]},
-      {id:"p1d4",name:"Lower — Hypertrophy",items:[["goblet","4×10–12"],["latlunge","3×10/side"],["hipthrust","4×10"],["hamcurl","3×12"],["adductor","3×15"],["hanglegraise","3×12"]]},
-      {id:"p1d5",name:"Upper — Shoulders & Arms",items:[["flatdb","4×10"],["row","4×12"],["ohp","3×10"],["lateralraise","4×15"],["reardelt","3×15"],["facepull","3×15"],["hammercurl","3×12"],["pushdown","3×15"],["inclinecurl","3×12"],["triext","3×12"]]},
-      {id:"p1d6",name:"Recovery / Engine",items:[["zone2","30–40 min"]]},
+      {id:"r1",name:"Full Body A",items:[["goblet","3×10 light"],["rdl","3×10"],["pullup","3×10 pulldown"],["inclinedb","3×10"],["corecircuit","3×30s plank"],["zone2","walk 15 min"]]},
+      {id:"r2",name:"Full Body B",items:[["legpress","3×12"],["hipthrust","3×12"],["row","3×12 cable"],["ohp","3×10"],["deadbug","3×10"],["intervals","12 min easy"]]},
+      {id:"r3",name:"Full Body C",items:[["bulgarian","3×8/leg"],["hamcurl","3×12"],["pullup","3×10 assisted"],["cablepress","3×12"],["lateralraise","3×15"],["zone2","incline walk 15"]]},
+      {id:"r4",name:"Engine + Mobility",items:[["zone2","25-30 min Z2"],["mobility","10 min"]]},
     ]},
-  p2:{name:"Phase 2 — Hold",tag:"Travel · Aug 10 → Sept 8",note:"No gym. Preserve muscle with tension & near-failure. Band+space to Aug 22, then bodyweight only.",
+  p2:{name:"Block 2 — Build & Burn",tag:"Weeks 3-8 · full gym",note:"5 lifting days. Heavy compounds keep your muscle while the deficit strips fat. Progress: hit top of rep range on all sets with 2 left in the tank → add weight.",
     sessions:[
-      {id:"p2a",name:"Lower — Tension",items:[["temposplit","4×8/leg"],["slrdl","3×10/leg"],["bandlegcurl","3×15"],["pistol","3×5/leg"],["broadjump","4×5"],["pogo","3×20"]]},
-      {id:"p2b",name:"Upper — Tension",items:[["pushup","4×AMRAP"],["row","4×15 band"],["pikepush","3×8"],["facepull","3×20 band"],["dbcurl","3×12"],["triext","3×12"]]},
-      {id:"p2c",name:"Athletic Conditioning",items:[["hillsprint","10×20–40m"],["latbound","4×8/side"],["shuttle","6 rounds"],["corecircuit","3 rounds"]]},
-      {id:"p2d",name:"Zone 2 (optional)",items:[["zone2","30–45 min"]]},
+      {id:"b1",name:"Lower — Strength",items:[["backsquat","4×5 (65-70% up)"],["rdl","4×8"],["walkinglunge","3×12/leg"],["legpress","3×12"],["calf","4×12"],["hanglegraise","3×12"]]},
+      {id:"b2",name:"Upper — Push + Shoulders",items:[["inclinedb","4×8"],["ohp","4×10"],["cablefly","3×12"],["lateralraise","4×15"],["pushdown","3×15"],["triext","3×12"],["cablecrunch","3×15"]]},
+      {id:"b3",name:"Conditioning + Core",items:[["treadsprint","10×30s/60-90s"],["sled","6×20m"],["rower500","4×500m"],["farmer","4×40m"],["corecircuit","3 rounds"]]},
+      {id:"b4",name:"Lower — Glutes + Hams",items:[["hipthrust","4×10"],["bulgarian","4×10/leg"],["hamcurl","4×12"],["kickback","3×15"],["adductor","3×15"],["latbandwalk","3×20/side"]]},
+      {id:"b5",name:"Upper — Pull + Arms",items:[["pullup","4×10"],["row","4×12"],["cablerow1","3×12/side"],["facepull","4×15"],["reardelt","3×15"],["hammercurl","3×12"],["inclinecurl","3×12"],["pushdown","3×15"]]},
+      {id:"b6",name:"Swim / Zone 2 (optional)",items:[["zone2","30-45 min easy"]]},
     ]},
-  p3:{name:"Phase 3 — Drive",tag:"Internship · Sept 8 →",note:"Gym back. Week 1 = re-entry deload. Restart barbell deadlift ~70kg 4×5, then climb. Steady fat loss ~0.5–0.7kg/wk.",
+  p3:{name:"Block 3 — Define",tag:"Weeks 9-16 · reveal",note:"Same 5-day structure. Hold the heavy compounds (that's what keeps muscle in a deficit), trim accessory volume, add a short conditioning finisher. Deload every 5th week at 60% sets.",
     sessions:[
-      {id:"p3d1",name:"Lower — Strength",items:[["broadjump","3×3"],["rdl","4×5 (build to DL)"],["legpress","4×8"],["bulgarian","3×8/leg"],["calf","3×12"],["pallof","3×12"]]},
-      {id:"p3d2",name:"Upper — Strength",items:[["inclinedb","4×6–8"],["pullup","4×6–8"],["ohp","3×8"],["row","3×10"],["facepull","3×15"],["carry","3×30m"]]},
-      {id:"p3d4",name:"Lower — Hypertrophy",items:[["goblet","4×10"],["latlunge","3×10/side"],["hipthrust","4×10"],["hamcurl","3×12"],["hanglegraise","3×12"]]},
-      {id:"p3d5",name:"Upper — Shoulders & Arms",items:[["flatdb","4×10"],["row","4×12"],["lateralraise","4×15"],["reardelt","3×15"],["hammercurl","3×12"],["pushdown","3×15"],["inclinecurl","3×12"],["triext","3×12"]]},
+      {id:"d1",name:"Lower — Strength",items:[["backsquat","4×5"],["rdl","4×8"],["walkinglunge","3×12/leg"],["legpress","3×10"],["calf","4×12"],["intervals","finisher 10 min"]]},
+      {id:"d2",name:"Upper — Push + Shoulders",items:[["inclinedb","4×8"],["ohp","4×10"],["lateralraise","4×15"],["cablefly","3×12"],["pushdown","3×15"],["triext","3×12"]]},
+      {id:"d3",name:"Conditioning + Core",items:[["treadsprint","12×30s"],["sled","6×20m"],["rower500","5×500m"],["farmer","4×40m"],["corecircuit","3 rounds"]]},
+      {id:"d4",name:"Lower — Glutes + Hams",items:[["hipthrust","4×10"],["bulgarian","4×10/leg"],["hamcurl","4×12"],["kickback","3×15"],["latbandwalk","3×20/side"],["intervals","finisher 10 min"]]},
+      {id:"d5",name:"Upper — Pull + Arms",items:[["pullup","4×10"],["row","4×12"],["facepull","4×15"],["reardelt","3×15"],["hammercurl","3×12"],["pushdown","3×15"]]},
+      {id:"d6",name:"Swim / Zone 2 (optional)",items:[["zone2","30-45 min easy"]]},
     ]},
 };
 
 const FOODS = [
-  ["Eggs (2)",140,12],["Greek yogurt (170g)",100,17],["Chicken breast (150g)",240,45],
-  ["White fish (150g)",160,33],["Sardines (can)",190,22],["Tuna pouch",110,25],
-  ["Lentils (1 cup)",230,18],["Chickpeas (1 cup)",270,15],["Cottage cheese (150g)",120,20],
-  ["Whey scoop",120,24],["Oats (60g)",230,8],["Rice (1 cup)",205,4],
-  ["Bread (2 slices)",160,8],["Banana",105,1],["Dates (3)",60,0],
+  ["Eggs (2)",140,12],["Egg whites (1 cup)",125,26],["Greek yogurt (170g)",100,17],
+  ["Skyr (150g)",90,17],["Cottage cheese (150g)",120,20],["Chicken breast (150g)",240,45],
+  ["Ground turkey (150g)",240,38],["Canned tuna",110,25],["Salmon (150g)",280,34],
+  ["White fish (150g)",160,33],["Tofu (150g)",180,17],["Lentils (1 cup)",230,18],
+  ["Chickpeas (1 cup)",270,15],["Whey scoop",120,24],["Oats (60g)",230,8],
+  ["Rice (1 cup)",205,4],["Potato (medium)",160,4],["Bread (2 slices)",160,8],
+  ["Frozen veg (1 cup)",60,3],["Berries (1 cup)",70,1],["Banana",105,1],
   ["Apple",95,0],["Almonds (30g)",175,6],["Olive oil (1 tbsp)",120,0],
 ];
 
 /* ---------------- state + storage ---------------- */
 const DEFAULTS = ()=>({
   version:1,
-  settings:{targetKcal:1800,targetProtein:150,phase:"p1",startWeight:70,goalWeight:60},
+  settings:{targetKcal:1800,targetProtein:150,phase:"p1",startWeight:75,goalWeight:60},
   bodyweight:[], workouts:[], diet:{}, draft:null
 });
 let state = DEFAULTS();
@@ -309,10 +325,10 @@ function save(){ clearTimeout(saveTimer); saveTimer=setTimeout(async()=>{
 /* ---------------- cloud sync (Firebase) ---------------- */
 /* ▼▼▼ PASTE YOUR FIREBASE KEYS HERE (see setup guide). Until you do, the app runs local-only. ▼▼▼ */
 const FIREBASE_CONFIG = {
-  apiKey:"AIzaSyCJjpmLxxpiPDLqLq7JpPl-t-Zx8DyJM7I",
-  authDomain:"lane8-88e7e.firebaseapp.com",
-  projectId:"lane8-88e7e",
-  appId:"1:683710011379:web:d65e10d1feda1db7bba486"
+  apiKey:"PASTE_apiKey",
+  authDomain:"PASTE_authDomain",
+  projectId:"PASTE_projectId",
+  appId:"PASTE_appId"
 };
 /* ▲▲▲ nothing else below needs editing ▲▲▲ */
 let fbReady=false, fbErr="", authApi=null, dbApi=null, cloud=null, lastSent=null, authMode="login";
